@@ -4,27 +4,27 @@ type PostBlock =
   | { type: "paragraph" | "heading"; text: string }
   | { type: "numbered" | "bullets"; items: string[] };
 
-export type Post = {
+type PostSource = {
   slug: string;
   tags: string[];
   title: string;
   summary: string;
   date: string; // Shown on the page
   isoDate: string; // Machine-readable publish date
-  readTime: string;
   body: PostBlock[];
 };
 
-export const posts: Post[] = [
+const WORDS_PER_MINUTE = 200;
+
+const sources: PostSource[] = [
   {
     slug: "building-production-ready-rag-systems",
     tags: ["RAG", "LLMs", "Python"],
     title: "Building Production-Ready RAG Systems",
     summary:
       "A deep dive into designing retrieval-augmented generation pipelines that actually work at scale. Covering vector databases, embedding strategies, and evaluation metrics.",
-    date: "Jan 15, 2026",
-    isoDate: "2026-01-15",
-    readTime: "8 min read",
+    date: "Jan 25, 2026",
+    isoDate: "2026-01-25",
     body: [
       {
         type: "paragraph",
@@ -51,9 +51,8 @@ export const posts: Post[] = [
     title: "Agentic AI Patterns for Real Applications",
     summary:
       "Exploring practical patterns for building AI agents that can reason, plan, and execute multi-step tasks. From simple chains to complex autonomous workflows.",
-    date: "Dec 28, 2025",
-    isoDate: "2025-12-28",
-    readTime: "12 min read",
+    date: "Nov 29, 2025",
+    isoDate: "2025-11-29",
     body: [
       {
         type: "paragraph",
@@ -85,9 +84,8 @@ export const posts: Post[] = [
     title: "React Performance in AI-Heavy Applications",
     summary:
       "Strategies for keeping your React UI responsive when dealing with streaming LLM responses, large datasets, and complex visualizations.",
-    date: "Nov 10, 2025",
-    isoDate: "2025-11-10",
-    readTime: "6 min read",
+    date: "July 11, 2025",
+    isoDate: "2025-07-11",
     body: [
       {
         type: "paragraph",
@@ -110,3 +108,16 @@ export const posts: Post[] = [
     ],
   },
 ];
+
+function minutesToRead(body: PostBlock[]) {
+  const text = body.flatMap((block) => ("text" in block ? block.text : block.items)).join(" ");
+  const words = text.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
+}
+
+export const posts = sources.map((post) => ({
+  ...post,
+  readTime: `${minutesToRead(post.body)} min read`,
+}));
+
+export type Post = (typeof posts)[number];

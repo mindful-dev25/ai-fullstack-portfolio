@@ -32,7 +32,7 @@ export function ContactForm() {
     );
 
   return (
-    <form action={formAction} className="card flex flex-col gap-3.5 p-5">
+    <form action={formAction} className="card flex h-full flex-col gap-3.5 p-5">
       <div className="grid gap-3.5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-ink">
@@ -55,7 +55,8 @@ export function ContactForm() {
           {fieldError("email")}
         </div>
       </div>
-      <div>
+      {/* The message box takes any spare height so the card matches the column beside it. */}
+      <div className="flex grow flex-col">
         <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-ink">
           Message
         </label>
@@ -63,7 +64,7 @@ export function ContactForm() {
           {...fieldProps("message")}
           rows={3}
           placeholder="Tell me about your project or role"
-          className={`${fieldClass} resize-y`}
+          className={`${fieldClass} grow resize-y`}
         />
         {fieldError("message")}
       </div>
