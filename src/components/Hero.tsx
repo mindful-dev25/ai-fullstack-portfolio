@@ -1,4 +1,4 @@
-import { profile } from "@/data/resume";
+import { profile, socials } from "@/data/resume";
 import { Icon } from "./icons";
 import { NeuralCanvas } from "./NeuralCanvas";
 import { Tagline } from "./Tagline";
@@ -71,13 +71,27 @@ export function Hero() {
             View Projects
           </a>
         </div>
-        <a
-          href={`mailto:${profile.email}`}
-          aria-label={`Email ${profile.name}`}
-          className="hero-in grid size-11 place-items-center rounded-full border border-line text-ink-2 transition [animation-delay:500ms] hover:text-accent"
-        >
-          <Icon name="mail" />
-        </a>
+        <div className="hero-in flex items-center justify-center gap-5 [animation-delay:500ms]">
+          {socials.map(({ label, href, icon }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="grid size-11 place-items-center rounded-full border border-line text-ink-2 transition hover:text-accent"
+            >
+              <Icon name={icon} />
+            </a>
+          ))}
+          <a
+            href={`mailto:${profile.email}`}
+            aria-label={`Email ${profile.name}`}
+            className="grid size-11 place-items-center rounded-full border border-line text-ink-2 transition hover:text-accent"
+          >
+            <Icon name="mail" />
+          </a>
+        </div>
       </div>
 
       <a

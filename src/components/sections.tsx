@@ -1,4 +1,4 @@
-import { certifications, education, featuredWork, profile, skills, stats, type SkillIcon } from "@/data/resume";
+import { featuredWork, profile, skills, socials, stats, type SkillIcon } from "@/data/resume";
 import { posts } from "@/data/posts";
 import { ContactForm } from "./ContactForm";
 import { ExperienceTabs } from "./ExperienceTabs";
@@ -21,10 +21,7 @@ export function About() {
   return (
     <Section id="about" number="01" title="About Me">
       <Reveal className="card mb-5 grid gap-6 p-5 sm:p-6 lg:grid-cols-[1.5fr_1fr] lg:gap-8">
-        <div>
-          <h3 className="gradient-text mb-3 w-fit text-xl font-bold">The Short Version</h3>
-          <p className="leading-relaxed text-ink-2">{profile.summary}</p>
-        </div>
+        <p className="self-center leading-relaxed text-ink-2">{profile.summary}</p>
         <dl className="grid grid-cols-2 gap-4 border-t border-line pt-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
           {stats.map(({ value, label }) => (
             <div key={label} className="flex flex-col-reverse justify-end gap-0.5 text-center lg:justify-center">
@@ -123,46 +120,11 @@ export function Blog() {
   );
 }
 
-export function Education() {
-  return (
-    <Section id="education" number="05" title="Education & Certifications">
-      <div className="grid gap-4 md:grid-cols-2">
-        <Reveal className="card card-hover flex gap-4 p-5">
-          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-accent/15 text-accent">
-            <Icon name="graduation" />
-          </span>
-          <div>
-            <h3 className="text-lg leading-snug font-bold text-ink">{education.degree}</h3>
-            <p className="text-sm font-semibold text-accent-2">{education.school}</p>
-            <p className="text-sm text-ink-2">{education.graduated}</p>
-          </div>
-        </Reveal>
-        <Reveal delay={60} className="card card-hover flex gap-4 p-5">
-          <span className="grid size-10 shrink-0 place-items-center rounded-lg bg-accent-2/15 text-accent-2">
-            <Icon name="award" />
-          </span>
-          <div>
-            <h3 className="mb-1.5 text-lg leading-snug font-bold text-ink">Certifications</h3>
-            <ul className="flex flex-col gap-1.5">
-              {certifications.map((certification) => (
-                <li key={certification} className="flex gap-2 text-sm leading-relaxed text-ink-2">
-                  <Icon name="chevron" width={14} height={14} className="mt-1 shrink-0 text-accent" />
-                  {certification}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Reveal>
-      </div>
-    </Section>
-  );
-}
-
 export function Contact() {
   return (
     <Section
       id="contact"
-      number="06"
+      number="05"
       title="Get In Touch"
       subtitle="Have a project in mind or an AI engineering role to discuss? I'd love to hear about it."
     >
@@ -191,6 +153,29 @@ export function Contact() {
               <span className="block font-medium text-ink">{profile.location}</span>
             </span>
           </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {socials.map(({ label, handle, href, icon }, i) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card card-hover flex items-center gap-3 p-3"
+              >
+                <span
+                  className={`grid size-10 shrink-0 place-items-center rounded-lg ${
+                    i % 2 ? "bg-accent-2/15 text-accent-2" : "bg-accent/15 text-accent"
+                  }`}
+                >
+                  <Icon name={icon} />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-xs text-ink-2">{label}</span>
+                  <span className="block font-medium break-words text-ink">{handle}</span>
+                </span>
+              </a>
+            ))}
+          </div>
           <p className="flex items-center gap-3 rounded-2xl border border-accent/50 border-l-4 border-l-accent bg-surface p-3 text-sm text-ink-2">
             <span className="size-2 shrink-0 rounded-full bg-emerald-500" />
             Currently open to new opportunities
@@ -206,8 +191,25 @@ export function Contact() {
 
 export function Footer() {
   return (
-    <footer className="border-t border-line px-4 py-5 text-center text-sm text-ink-2 sm:px-6">
-      © {profile.name}. {profile.role}.
+    <footer className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-line px-4 py-5 text-center text-sm text-ink-2 sm:px-6">
+      <p>
+        © {profile.name}. {profile.role}.
+      </p>
+      <ul className="flex items-center gap-3">
+        {socials.map(({ label, href, icon }) => (
+          <li key={label}>
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="block transition-colors hover:text-accent"
+            >
+              <Icon name={icon} width={18} height={18} />
+            </a>
+          </li>
+        ))}
+      </ul>
     </footer>
   );
 }

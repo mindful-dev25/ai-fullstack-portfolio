@@ -9,8 +9,8 @@ export const profile = {
   role: "Senior AI & Full Stack Engineer",
   taglines: [
     "Turning ambiguous ideas into reliable AI products",
-    "Agents, RAG pipelines, and polished React UIs",
-    "Full stack, from Java backends to AI services",
+    "Shipping AI that delivers measurable results",
+    "Building reliable software for millions of users",
   ],
   email: "luis.rasgado71@outlook.com",
   location: "San Francisco, CA",
@@ -19,6 +19,21 @@ export const profile = {
   summary:
     "Full Stack AI Engineer with 12+ years of experience in turning ambiguous product ideas into reliable software products across education technology, healthcare, and financial technology. Shipped LLM-powered applications, RAG pipelines, backend AI services, and polished React user interfaces that saved $200K annually and supported 75M users generating $2.2B in revenue.",
 };
+
+export const socials = [
+  {
+    label: "GitHub",
+    handle: "mindful-dev25",
+    href: "https://github.com/mindful-dev25",
+    icon: "github",
+  },
+  {
+    label: "LinkedIn",
+    handle: "luis-r",
+    href: "https://www.linkedin.com/in/luis-r-1b5a29381/",
+    icon: "linkedin",
+  },
+] as const;
 
 export const stats = [
   { value: "12+", label: "Years Experience" },
@@ -149,44 +164,6 @@ export const featuredWork = [
       "A healthcare platform for personalized insulin dosing across diabetes care, with HIPAA-compliant observability and security controls.",
     tags: ["Java", "Spring Boot", "React", "GraphQL"],
   },
-  {
-    metric: "95%",
-    metricLabel: "fewer accessibility QA defects",
-    title: "ADA-Compliant Design System",
-    company: "Medtronic",
-    description:
-      "A component library and design system that improved UI consistency and made accessibility the default across the product.",
-    tags: ["React", "TypeScript", "Storybook", "Tailwind CSS"],
-  },
-  {
-    metric: "50M",
-    metricLabel: "user events processed",
-    title: "Real-Time Analytics Pipelines",
-    company: "Boston Consulting Group",
-    description:
-      "Real-time ETL pipelines powering analytics dashboards for engagement, feature adoption, and subscription insights.",
-    tags: ["Spark Streaming", "Kafka", "Hadoop", "Hive"],
-  },
-  {
-    metric: "80%",
-    metricLabel: "lower inter-service latency",
-    title: "gRPC Service Migration",
-    company: "Spotify",
-    description:
-      "Migrated service-to-service communication from REST/JSON to gRPC with Protocol Buffers across distributed backend systems serving 75 million users.",
-    tags: ["gRPC", "Protocol Buffers", "Java", "Node.js"],
-  },
-];
-
-export const education = {
-  degree: "Bachelor of Science, Computer Science",
-  school: "University of San Francisco",
-  graduated: "Graduated 2013",
-};
-
-export const certifications = [
-  "Oracle Certified Professional: Java SE 21 Developer",
-  "IBM AI Engineering Professional Certificate",
 ];
 
 export const navLinks = [
@@ -194,6 +171,5 @@ export const navLinks = [
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Blog", href: "#blog" },
-  { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
 ];
