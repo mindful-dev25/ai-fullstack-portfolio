@@ -1,0 +1,217 @@
+@import "tailwindcss";
+
+/* The .dark class on <html> is set before first paint by the script in layout.tsx. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --page: #f8f9fc;
+  --surface: #ffffff;
+  --glass: rgb(255 255 255 / 0.78);
+  --tag: #f1f3f8;
+  --line: #e3e6ef;
+  --ink: #0f0f1a;
+  --ink-2: #474759;
+  --ink-3: #64647a;
+  --accent: #0e7490;
+  --accent-2: #7c3aed;
+  --on-accent: #ffffff;
+  --glow: rgb(14 116 144 / 0.32);
+  color-scheme: light;
+}
+
+.dark {
+  --page: #050508;
+  --surface: #0d0d16;
+  --glass: rgb(10 10 18 / 0.78);
+  --tag: #14141f;
+  --line: #20203a;
+  --ink: #f0f0f5;
+  --ink-2: #b0b0c0;
+  --ink-3: #8a8a9c;
+  --accent: #00d4ff;
+  --accent-2: #b78aff;
+  --on-accent: #04121a;
+  --glow: rgb(0 212 255 / 0.4);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-glass: var(--glass);
+  --color-tag: var(--tag);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-on-accent: var(--on-accent);
+  --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --shadow-glow: 0 8px 28px var(--glow);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+/* Soft color washes that sit behind the whole page. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(40rem 40rem at 88% 82%, color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%),
+    radial-gradient(36rem 36rem at 8% 40%, color-mix(in srgb, var(--accent-2) 6%, transparent), transparent 70%);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@layer components {
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    background: var(--surface);
+  }
+
+  .card-hover {
+    transition:
+      translate 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .card-hover:hover {
+    translate: 0 -4px;
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+    box-shadow: 0 14px 36px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  .accent-gradient {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+
+  .gradient-text,
+  .shimmer-text {
+    background-image: linear-gradient(135deg, var(--accent), var(--accent-2));
+    background-clip: text;
+    color: transparent;
+  }
+
+  .shimmer-text {
+    display: inline-block;
+    background-image: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 50%, var(--accent) 100%);
+    background-size: 200% 200%;
+    animation: shimmer 4s ease infinite;
+  }
+
+  /* Hidden only once the layout script confirms JS can reveal it again. */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s ease;
+  }
+
+  .js .reveal.card-hover {
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s ease,
+      translate 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-in {
+    animation: hero-in 0.8s ease both;
+  }
+
+  .bob {
+    animation: bob 2s ease-in-out infinite;
+  }
+
+  .orbit {
+    transform-box: view-box;
+    transform-origin: center;
+    animation: spin 70s linear infinite;
+  }
+
+  .orbit-medium {
+    animation-duration: 50s;
+  }
+
+  .orbit-reverse {
+    animation-duration: 90s;
+    animation-direction: reverse;
+  }
+}
+
+@keyframes shimmer {
+  50% {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+@keyframes bob {
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .shimmer-text,
+  .hero-in,
+  .bob,
+  .orbit {
+    animation: none;
+  }
+
+  .js .reveal,
+  .js .reveal.card-hover {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@media print {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
