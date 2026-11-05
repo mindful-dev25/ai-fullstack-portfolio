@@ -67,6 +67,7 @@ export function Navbar() {
           <ThemeToggle />
           <a
             href={profile.resumeUrl}
+            download={profile.resumeFileName}
             className="hidden items-center gap-2 rounded-xl bg-accent px-4 py-2.5 font-semibold text-on-accent transition hover:-translate-y-0.5 hover:shadow-glow sm:flex"
           >
             <Icon name="download" width={18} height={18} />
@@ -99,7 +100,11 @@ export function Navbar() {
             </li>
           ))}
           <li>
-            <a href={profile.resumeUrl} className="block rounded-lg px-3 py-2.5 font-semibold text-accent">
+            <a
+              href={profile.resumeUrl}
+              download={profile.resumeFileName}
+              className="block rounded-lg px-3 py-2.5 font-semibold text-accent"
+            >
               Download Resume
             </a>
           </li>

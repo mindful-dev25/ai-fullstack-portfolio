@@ -1,8 +1,6 @@
 // Single source of truth for all site content. Everything here comes from the
 // resume; wrap text in **double asterisks** to highlight it on the page.
 
-const RESUME_DOC_ID = "1vctqQ3lUzCxFjAlpIMCZcJqIO8GAvQP2WamxCfzGVRA";
-
 export const profile = {
   name: "Luis Rasgado",
   initials: "LR",
@@ -14,8 +12,9 @@ export const profile = {
   ],
   email: "luis.rasgado71@outlook.com",
   location: "San Francisco, CA",
-  // Live PDF export of the resume doc, so the download never goes stale.
-  resumeUrl: `https://docs.google.com/document/d/${RESUME_DOC_ID}/export?format=pdf`,
+  // Served from public/resume.pdf. Replace that file to update the download.
+  resumeUrl: "/resume.pdf",
+  resumeFileName: "Luis Rasgado.pdf",
   summary:
     "Full Stack AI Engineer with **12+ years of experience** in turning ambiguous product ideas into reliable software products across education technology, healthcare, and financial technology. Shipped LLM-powered applications, RAG pipelines, backend AI services, and polished React user interfaces that saved **$200K annually** and supported **75M users** generating **$2.2B in revenue**.",
 };
