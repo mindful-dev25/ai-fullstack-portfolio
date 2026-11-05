@@ -6,7 +6,7 @@ import { Icon, type IconName } from "./icons";
 import { PostDialog } from "./PostDialog";
 import { PostMeta } from "./PostMeta";
 import { Reveal } from "./Reveal";
-import { Section, TagList } from "./ui";
+import { RichText, Section, TagList } from "./ui";
 
 const skillIcons: Record<SkillIcon, IconName> = {
   code: "code",
@@ -21,7 +21,9 @@ export function About() {
   return (
     <Section id="about" number="01" title="About Me">
       <Reveal className="card mb-5 grid gap-6 p-5 sm:p-6 lg:grid-cols-[1.5fr_1fr] lg:gap-8">
-        <p className="self-center leading-relaxed text-ink-2">{profile.summary}</p>
+        <p className="self-center leading-relaxed text-ink-2">
+          <RichText text={profile.summary} />
+        </p>
         <dl className="grid grid-cols-2 gap-4 border-t border-line pt-5 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-8">
           {stats.map(({ value, label }) => (
             <div key={label} className="flex flex-col-reverse justify-end gap-0.5 text-center lg:justify-center">

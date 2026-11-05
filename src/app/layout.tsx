@@ -14,7 +14,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 const title = `${profile.name} | ${profile.role}`;
-const description = profile.summary;
+const description = profile.summary.replaceAll("**", ""); // Metadata is plain text
 
 export const metadata: Metadata = {
   title,
