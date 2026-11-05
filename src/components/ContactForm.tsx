@@ -5,7 +5,7 @@ import { profile } from "@/data/resume";
 import { Icon } from "./icons";
 
 const fieldClass =
-  "w-full rounded-xl border border-line bg-page px-4 py-3 text-ink transition-colors placeholder:text-ink-3 focus:border-accent focus:outline-none";
+  "w-full rounded-xl border border-line bg-page px-3.5 py-2.5 text-ink transition-colors placeholder:text-ink-3 focus:border-accent focus:outline-none";
 
 /**
  * There is no mail backend, so sending opens the visitor's email app with the
@@ -25,48 +25,50 @@ export function ContactForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card flex flex-col gap-5 p-6 sm:p-8">
-      <div>
-        <label htmlFor="name" className="mb-2 block font-medium text-ink">
-          Name
-        </label>
-        <input id="name" name="name" required autoComplete="name" placeholder="Your name" className={fieldClass} />
+    <form onSubmit={handleSubmit} className="card flex flex-col gap-3.5 p-5">
+      <div className="grid gap-3.5 sm:grid-cols-2">
+        <div>
+          <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-ink">
+            Name
+          </label>
+          <input id="name" name="name" required autoComplete="name" placeholder="Your name" className={fieldClass} />
+        </div>
+        <div>
+          <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-ink">
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            placeholder="you@example.com"
+            className={fieldClass}
+          />
+        </div>
       </div>
       <div>
-        <label htmlFor="email" className="mb-2 block font-medium text-ink">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          required
-          autoComplete="email"
-          placeholder="you@example.com"
-          className={fieldClass}
-        />
-      </div>
-      <div>
-        <label htmlFor="message" className="mb-2 block font-medium text-ink">
+        <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-ink">
           Message
         </label>
         <textarea
           id="message"
           name="message"
           required
-          rows={5}
+          rows={3}
           placeholder="Tell me about your project or role"
           className={`${fieldClass} resize-y`}
         />
       </div>
       <button
         type="submit"
-        className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3.5 font-semibold text-on-accent transition hover:-translate-y-0.5 hover:shadow-glow"
+        className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 font-semibold text-on-accent transition hover:-translate-y-0.5 hover:shadow-glow"
       >
         <Icon name="send" width={18} height={18} />
         Send Message
       </button>
-      <p aria-live="polite" className="text-center text-sm text-ink-3">
+      <p aria-live="polite" className="text-center text-xs text-ink-3">
         {opened
           ? `Your email app should have opened. If not, write to ${profile.email}.`
           : "Sending opens your email app with this message filled in."}
