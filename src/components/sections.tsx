@@ -189,27 +189,46 @@ export function Contact() {
   );
 }
 
+// A fixed value: Cache Components doesn't allow new Date() in a prerendered page.
+const COPYRIGHT_YEAR = 2026;
+
+const footerLinkClass =
+  "block rounded-lg border border-line bg-glass p-2 text-ink-2 backdrop-blur-sm transition-all duration-300 hover:text-accent hover:shadow-glow";
+
 export function Footer() {
   return (
-    <footer className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-line px-4 py-5 text-center text-sm text-ink-2 sm:px-6">
-      <p>
-        © {profile.name}. {profile.role}.
-      </p>
-      <ul className="flex items-center gap-3">
-        {socials.map(({ label, href, icon }) => (
-          <li key={label}>
-            <a
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={label}
-              className="block transition-colors hover:text-accent"
-            >
-              <Icon name={icon} width={18} height={18} />
+    <footer className="border-t border-line px-4 py-8 sm:px-6">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
+        <div className="flex flex-col items-center gap-2 md:items-start">
+          <span className="gradient-text text-xl font-bold">{profile.initials}</span>
+          <p className="flex flex-wrap items-center justify-center gap-1 text-sm text-ink-3">
+            © {COPYRIGHT_YEAR} {profile.name}. Built with
+            <Icon name="heart" width={14} height={14} className="fill-current text-pink-500" />
+            <span className="sr-only">love</span>
+            and React.
+          </p>
+        </div>
+        <ul className="flex items-center gap-4">
+          {socials.map(({ label, href, icon }) => (
+            <li key={label}>
+              <a
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className={footerLinkClass}
+              >
+                <Icon name={icon} />
+              </a>
+            </li>
+          ))}
+          <li>
+            <a href={`mailto:${profile.email}`} aria-label="Email" className={footerLinkClass}>
+              <Icon name="mail" />
             </a>
           </li>
-        ))}
-      </ul>
+        </ul>
+      </div>
     </footer>
   );
 }

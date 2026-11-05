@@ -51,6 +51,7 @@ const paths = {
       <circle cx="4" cy="4" r="2" />
     </>
   ),
+  heart: <path d="M12 21s-8-5-8-11a4.500 4.500 0 0 1 8-2.800A4.500 4.500 0 0 1 20 10c0 6-8 11-8 11Z" />,
   layout: (
     <>
       <rect x="3" y="3" width="18" height="18" rx="2" />
