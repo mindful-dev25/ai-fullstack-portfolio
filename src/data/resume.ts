@@ -121,7 +121,7 @@ export const experience = [
     tags: ["Java", "Spring Cloud", "Kafka", "Spark", "React", "Next.js", "Cypress", "OAuth 2.0"],
   },
   {
-    title: "Junior Developer",
+    title: "Software Developer",
     company: "Spotify",
     location: "San Francisco, CA",
     period: "Jun 2013 - Sep 2015",
