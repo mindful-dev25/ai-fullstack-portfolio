@@ -7,14 +7,17 @@ export const profile = {
   name: "Luis Rasgado",
   initials: "LR",
   role: "Senior AI & Full Stack Engineer",
-  tagline: "Turning ambiguous ideas into reliable AI products",
+  taglines: [
+    "Turning ambiguous ideas into reliable AI products",
+    "Agents, RAG pipelines, and polished React UIs",
+    "Full stack, from Java backends to AI services",
+  ],
   email: "luis.rasgado71@outlook.com",
   location: "San Francisco, CA",
   // Live PDF export of the resume doc, so the download never goes stale.
   resumeUrl: `https://docs.google.com/document/d/${RESUME_DOC_ID}/export?format=pdf`,
   summary:
     "Full Stack AI Engineer with 12+ years of experience in turning ambiguous product ideas into reliable software products across education technology, healthcare, and financial technology. Shipped LLM-powered applications, RAG pipelines, backend AI services, and polished React user interfaces that saved $200K annually and supported 75M users generating $2.2B in revenue.",
-  expertise: ["Java", "Python", "React", "TypeScript"],
 };
 
 export const stats = [
@@ -191,5 +194,6 @@ export const navLinks = [
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
   { label: "Blog", href: "#blog" },
+  { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
 ];

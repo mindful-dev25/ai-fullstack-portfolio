@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 type Point = {
-  x: number; // Position in a -1..1 unit space, mapped onto the canvas each frame.
+  x: number; // Position in a -1..1 unit space, mapped onto the cloud each frame.
   y: number;
   r: number;
   phase: number;
@@ -11,9 +11,20 @@ type Point = {
   hue: 0 | 1;
 };
 
-const DUST_COUNT = 520;
-const NODE_COUNT = 42;
-const LINK_DISTANCE = 0.42;
+type Orb = {
+  angle: number;
+  radius: number; // Orbit radius as a fraction of the hero's base size.
+  r: number;
+  speed: number;
+  color: 0 | 1 | 2;
+  alpha: number;
+};
+
+const DUST_COUNT = 1500;
+const NODE_COUNT = 32;
+const ORB_COUNT = 18;
+const LINK_DISTANCE = 0.46; // In unit space, so links scale with the cloud.
+const PINK = "#f472b6";
 
 function randomInCloud(): { x: number; y: number } {
   // Rejection-sample an uneven, two-lobed cloud so it reads as a neural mass.
@@ -38,7 +49,18 @@ function makePoints(count: number, minR: number, maxR: number): Point[] {
   }));
 }
 
-/** Animated particle network behind the hero text. Purely decorative. */
+function makeOrbs(): Orb[] {
+  return Array.from({ length: ORB_COUNT }, () => ({
+    angle: Math.random() * Math.PI * 2,
+    radius: 0.3 + Math.random() * 0.55,
+    r: 5 + Math.random() * 13,
+    speed: (0.012 + Math.random() * 0.02) * (Math.random() > 0.5 ? 1 : -1),
+    color: Math.floor(Math.random() * 3) as Orb["color"],
+    alpha: 0.3 + Math.random() * 0.3,
+  }));
+}
+
+/** Animated particle cloud and floating orbs behind the hero text. Purely decorative. */
 export function NeuralCanvas({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -47,44 +69,57 @@ export function NeuralCanvas({ className = "" }: { className?: string }) {
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
-    const dust = makePoints(DUST_COUNT, 0.5, 1.3);
-    const nodes = makePoints(NODE_COUNT, 2.5, 6);
+    const dust = makePoints(DUST_COUNT, 1.5, 3.2);
+    const nodes = makePoints(NODE_COUNT, 3, 6.5);
+    const orbs = makeOrbs();
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    let colors: [string, string] = ["#0e7490", "#7c3aed"];
+    let colors = ["#0891b2", "#7c3aed", PINK];
     let width = 0;
     let height = 0;
+    let base = 0; // Must match the ring size set in Hero.tsx.
     let frame = 0;
     let onScreen = true;
     const pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
 
     const readColors = () => {
       const style = getComputedStyle(document.documentElement);
-      colors = [style.getPropertyValue("--accent").trim(), style.getPropertyValue("--accent-2").trim()];
+      colors = [style.getPropertyValue("--accent").trim(), style.getPropertyValue("--accent-2").trim(), PINK];
     };
 
-    const place = (p: Point, time: number, parallax: number) => {
-      const scale = Math.min(width, height * 1.25) * 0.5;
-      return {
-        x: width / 2 + (p.x + Math.sin(time * p.speed + p.phase) * 0.018) * scale + pointer.x * parallax,
-        y: height / 2 + (p.y + Math.cos(time * p.speed + p.phase) * 0.018) * scale * 0.8 + pointer.y * parallax,
-      };
-    };
+    const place = (p: Point, time: number, parallax: number) => ({
+      x: width / 2 + (p.x + Math.sin(time * p.speed + p.phase) * 0.02) * base * 0.255 + pointer.x * parallax,
+      y: height / 2 + base * 0.03 + (p.y + Math.cos(time * p.speed + p.phase) * 0.02) * base * 0.19 + pointer.y * parallax,
+    });
 
     const draw = (time: number) => {
       ctx.clearRect(0, 0, width, height);
       pointer.x += (pointer.targetX - pointer.x) * 0.05;
       pointer.y += (pointer.targetY - pointer.y) * 0.05;
 
-      const placed = nodes.map((node) => place(node, time, 16));
-      const maxLink = LINK_DISTANCE * Math.min(width, height * 1.25) * 0.5;
+      for (const orb of orbs) {
+        const angle = orb.angle + time * orb.speed;
+        ctx.globalAlpha = orb.alpha;
+        ctx.fillStyle = colors[orb.color];
+        ctx.beginPath();
+        ctx.arc(
+          width / 2 + Math.cos(angle) * orb.radius * base + pointer.x * 24,
+          height / 2 + Math.sin(angle) * orb.radius * base * 0.42 + pointer.y * 24,
+          orb.r,
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+      }
+
+      const placed = nodes.map((node) => place(node, time, 12));
 
       ctx.lineWidth = 1;
-      for (let i = 0; i < placed.length; i++) {
-        for (let j = i + 1; j < placed.length; j++) {
-          const distance = Math.hypot(placed[i].x - placed[j].x, placed[i].y - placed[j].y);
-          if (distance > maxLink) continue;
-          ctx.globalAlpha = (1 - distance / maxLink) * 0.28;
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const distance = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y);
+          if (distance > LINK_DISTANCE) continue;
+          ctx.globalAlpha = (1 - distance / LINK_DISTANCE) * 0.4;
           ctx.strokeStyle = colors[nodes[i].hue];
           ctx.beginPath();
           ctx.moveTo(placed[i].x, placed[i].y);
@@ -94,17 +129,15 @@ export function NeuralCanvas({ className = "" }: { className?: string }) {
       }
 
       for (const point of dust) {
-        const { x, y } = place(point, time, 8);
-        ctx.globalAlpha = 0.28 + Math.sin(time + point.phase) * 0.14;
+        const { x, y } = place(point, time, 6);
+        ctx.globalAlpha = 0.8 + Math.sin(time + point.phase) * 0.2;
         ctx.fillStyle = colors[point.hue];
-        ctx.beginPath();
-        ctx.arc(x, y, point.r, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillRect(x, y, point.r, point.r);
       }
 
       nodes.forEach((node, i) => {
         const pulse = 1 + Math.sin(time * 1.4 + node.phase) * 0.18;
-        ctx.globalAlpha = 0.42;
+        ctx.globalAlpha = 0.9;
         ctx.fillStyle = colors[node.hue];
         ctx.beginPath();
         ctx.arc(placed[i].x, placed[i].y, node.r * pulse, 0, Math.PI * 2);
@@ -130,6 +163,7 @@ export function NeuralCanvas({ className = "" }: { className?: string }) {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       width = rect.width;
       height = rect.height;
+      base = Math.min(width * 1.25, window.innerHeight * 1.02);
       canvas.width = Math.round(width * dpr);
       canvas.height = Math.round(height * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);

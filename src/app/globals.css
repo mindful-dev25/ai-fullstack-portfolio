@@ -12,10 +12,10 @@
   --ink: #0f0f1a;
   --ink-2: #474759;
   --ink-3: #64647a;
-  --accent: #0e7490;
+  --accent: #0891b2;
   --accent-2: #7c3aed;
-  --on-accent: #ffffff;
-  --glow: rgb(14 116 144 / 0.32);
+  --on-accent: #f8f9fc;
+  --glow: rgb(8 145 178 / 0.3);
   color-scheme: light;
 }
 
@@ -54,6 +54,31 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keeps the layout from shifting when an open dialog locks page scrolling. */
+  scrollbar-gutter: stable;
+}
+
+/* Brand-colored scrollbar. The ::-webkit-* rules cover Chrome, Edge, and Safari;
+   setting scrollbar-color there would turn them off, so it's Firefox only. */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: var(--accent) transparent;
+    scrollbar-width: thin;
+  }
 }
 
 body {
@@ -117,9 +142,24 @@ html:has(dialog[open]) {
 
   .shimmer-text {
     display: inline-block;
-    background-image: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 50%, var(--accent) 100%);
+    background-image: linear-gradient(135deg, #00d4ff 0%, #a855f7 50%, #00d4ff 100%);
     background-size: 200% 200%;
-    animation: shimmer 4s ease infinite;
+    animation: shimmer 3s ease infinite;
+  }
+
+  /* Washes out the hero visuals: paler overall, fading to the page at the edges. */
+  .hero-fade {
+    background:
+      linear-gradient(var(--page) 0%, transparent 12%, transparent 88%, var(--page) 100%),
+      radial-gradient(
+        transparent 0%,
+        color-mix(in srgb, var(--page) 50%, transparent) 55%,
+        var(--page) 85%
+      ),
+      radial-gradient(
+        color-mix(in srgb, var(--page) 40%, transparent),
+        color-mix(in srgb, var(--page) 60%, transparent)
+      );
   }
 
   /* Hidden only once the layout script confirms JS can reveal it again. */

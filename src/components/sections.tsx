@@ -30,18 +30,7 @@ export function About() {
     <Section id="about" number="01" title="About Me">
       <Reveal className="card mb-8 p-6 sm:p-8">
         <h3 className="gradient-text mb-4 w-fit text-2xl font-bold">The Short Version</h3>
-        <p className="mb-5 text-lg leading-relaxed text-ink-2">{profile.summary}</p>
-        <p className="text-lg leading-relaxed text-ink-2">
-          Expert in{" "}
-          {profile.expertise.map((skill, i) => (
-            <span key={skill}>
-              <span className={i % 2 ? "text-accent-2" : "text-accent"}>{skill}</span>
-              {i < profile.expertise.length - 2 && ", "}
-              {i === profile.expertise.length - 2 && ", and "}
-            </span>
-          ))}
-          .
-        </p>
+        <p className="text-lg leading-relaxed text-ink-2">{profile.summary}</p>
         <dl className="mt-8 grid grid-cols-2 gap-6 border-t border-line pt-8 lg:grid-cols-4">
           {stats.map(({ value, label }) => (
             <div key={label} className="flex flex-col-reverse items-center gap-1 text-center">
@@ -68,31 +57,6 @@ export function About() {
             <TagList items={items} />
           </Reveal>
         ))}
-      </div>
-
-      <div className="mt-6 grid gap-6 md:grid-cols-2">
-        <Reveal className="card card-hover p-6 sm:p-8">
-          <span className="mb-5 grid size-11 place-items-center rounded-xl bg-accent/15 text-accent">
-            <Icon name="graduation" />
-          </span>
-          <h3 className="mb-1 text-xl font-bold text-ink">{education.degree}</h3>
-          <p className="font-semibold text-accent-2">{education.school}</p>
-          <p className="mt-1 text-sm text-ink-2">{education.graduated}</p>
-        </Reveal>
-        <Reveal delay={80} className="card card-hover p-6 sm:p-8">
-          <span className="mb-5 grid size-11 place-items-center rounded-xl bg-accent-2/15 text-accent-2">
-            <Icon name="award" />
-          </span>
-          <h3 className="mb-3 text-xl font-bold text-ink">Certifications</h3>
-          <ul className="flex flex-col gap-3">
-            {certifications.map((certification) => (
-              <li key={certification} className="flex gap-3 leading-relaxed text-ink-2">
-                <Icon name="chevron" width={16} height={16} className="mt-1.5 shrink-0 text-accent" />
-                {certification}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
       </div>
     </Section>
   );
@@ -195,11 +159,42 @@ export function Blog() {
   );
 }
 
+export function Education() {
+  return (
+    <Section id="education" number="05" title="Education & Certifications">
+      <div className="grid gap-6 md:grid-cols-2">
+        <Reveal className="card card-hover p-6 sm:p-8">
+          <span className="mb-5 grid size-11 place-items-center rounded-xl bg-accent/15 text-accent">
+            <Icon name="graduation" />
+          </span>
+          <h3 className="mb-1 text-xl font-bold text-ink">{education.degree}</h3>
+          <p className="font-semibold text-accent-2">{education.school}</p>
+          <p className="mt-1 text-sm text-ink-2">{education.graduated}</p>
+        </Reveal>
+        <Reveal delay={80} className="card card-hover p-6 sm:p-8">
+          <span className="mb-5 grid size-11 place-items-center rounded-xl bg-accent-2/15 text-accent-2">
+            <Icon name="award" />
+          </span>
+          <h3 className="mb-3 text-xl font-bold text-ink">Certifications</h3>
+          <ul className="flex flex-col gap-3">
+            {certifications.map((certification) => (
+              <li key={certification} className="flex gap-3 leading-relaxed text-ink-2">
+                <Icon name="chevron" width={16} height={16} className="mt-1.5 shrink-0 text-accent" />
+                {certification}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </div>
+    </Section>
+  );
+}
+
 export function Contact() {
   return (
     <Section
       id="contact"
-      number="05"
+      number="06"
       title="Get In Touch"
       subtitle="Have a project in mind or an AI engineering role to discuss? I'd love to hear about it."
     >

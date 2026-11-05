@@ -47,7 +47,7 @@ export function Navbar() {
           {profile.initials}
         </a>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-5 md:flex lg:gap-8">
           {navLinks.map(({ label, href }) => (
             <li key={href}>
               <a

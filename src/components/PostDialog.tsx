@@ -28,13 +28,21 @@ export function PostDialog({ post }: { post: Post }) {
         ref={dialog}
         aria-labelledby={titleId}
         onClick={(event) => {
-          // The inner wrapper covers the dialog, so a click landing on the
-          // dialog element itself is a click on the backdrop.
-          if (event.target === dialog.current) dialog.current.close();
+          // Backdrop clicks target the dialog itself, but so do clicks on its
+          // inset margin, so close only when the click is outside its box.
+          const box = event.currentTarget.getBoundingClientRect();
+          const outside =
+            event.clientX < box.left ||
+            event.clientX > box.right ||
+            event.clientY < box.top ||
+            event.clientY > box.bottom;
+          if (event.target === event.currentTarget && outside) event.currentTarget.close();
         }}
-        className="m-auto max-h-[85svh] w-[calc(100%-2rem)] max-w-2xl overflow-y-auto rounded-2xl border border-line bg-surface text-ink backdrop:bg-black/60 backdrop:backdrop-blur-sm"
+        className="m-auto w-[calc(100%-2rem)] max-w-2xl overflow-hidden rounded-2xl border border-line bg-surface text-ink backdrop:bg-black/60 backdrop:backdrop-blur-sm"
       >
-        <article className="p-6 sm:p-8">
+        {/* Scrolling happens here, inset so the scrollbar clears the rounded corners. */}
+        <div className="my-3 mr-1.5 max-h-[calc(85svh-1.5rem)] overflow-y-auto">
+        <article className="py-3 pr-2.5 pl-6 sm:py-5 sm:pr-4.5 sm:pl-8">
           <div className="mb-5 flex items-start justify-between gap-4">
             <TagList items={post.tags} />
             <button
@@ -63,6 +71,7 @@ export function PostDialog({ post }: { post: Post }) {
             </section>
           ))}
         </article>
+        </div>
       </dialog>
     </>
   );
