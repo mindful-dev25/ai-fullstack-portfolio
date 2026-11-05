@@ -2,6 +2,7 @@ import type { ReactNode, SVGProps } from "react";
 
 const paths = {
   arrowDown: <path d="M12 5v14m-6-6 6 6 6-6" />,
+  arrowRight: <path d="M5 12h14m-6-6 6 6-6 6" />,
   award: (
     <>
       <circle cx="12" cy="9" r="6" />
@@ -27,6 +28,12 @@ const paths = {
     </>
   ),
   chevron: <path d="m9 6 6 6-6 6" />,
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
   close: <path d="M6 6l12 12M18 6 6 18" />,
   cloud: <path d="M7 19a5 5 0 0 1-.7-9.95A6 6 0 0 1 18 10.5 4.25 4.25 0 0 1 17.5 19Z" />,
   code: <path d="m8 7-5 5 5 5m8-10 5 5-5 5m-2-13-4 16" />,

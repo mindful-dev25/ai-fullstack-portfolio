@@ -8,8 +8,11 @@ import {
   stats,
   type SkillIcon,
 } from "@/data/resume";
+import { posts } from "@/data/posts";
 import { ContactForm } from "./ContactForm";
 import { Icon, type IconName } from "./icons";
+import { PostDialog } from "./PostDialog";
+import { PostMeta } from "./PostMeta";
 import { Reveal } from "./Reveal";
 import { RichText, Section, TagList } from "./ui";
 
@@ -66,6 +69,31 @@ export function About() {
           </Reveal>
         ))}
       </div>
+
+      <div className="mt-6 grid gap-6 md:grid-cols-2">
+        <Reveal className="card card-hover p-6 sm:p-8">
+          <span className="mb-5 grid size-11 place-items-center rounded-xl bg-accent/15 text-accent">
+            <Icon name="graduation" />
+          </span>
+          <h3 className="mb-1 text-xl font-bold text-ink">{education.degree}</h3>
+          <p className="font-semibold text-accent-2">{education.school}</p>
+          <p className="mt-1 text-sm text-ink-2">{education.graduated}</p>
+        </Reveal>
+        <Reveal delay={80} className="card card-hover p-6 sm:p-8">
+          <span className="mb-5 grid size-11 place-items-center rounded-xl bg-accent-2/15 text-accent-2">
+            <Icon name="award" />
+          </span>
+          <h3 className="mb-3 text-xl font-bold text-ink">Certifications</h3>
+          <ul className="flex flex-col gap-3">
+            {certifications.map((certification) => (
+              <li key={certification} className="flex gap-3 leading-relaxed text-ink-2">
+                <Icon name="chevron" width={16} height={16} className="mt-1.5 shrink-0 text-accent" />
+                {certification}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </div>
     </Section>
   );
 }
@@ -119,12 +147,12 @@ export function Experience() {
   );
 }
 
-export function FeaturedWork() {
+export function FeaturedProjects() {
   return (
     <Section
-      id="work"
+      id="projects"
       number="03"
-      title="Featured Work"
+      title="Featured Projects"
       subtitle="Systems shipped to production, and what they changed"
     >
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -144,32 +172,24 @@ export function FeaturedWork() {
   );
 }
 
-export function Education() {
+export function Blog() {
   return (
-    <Section id="education" number="04" title="Education & Certifications">
-      <div className="grid gap-6 md:grid-cols-2">
-        <Reveal className="card card-hover p-6 sm:p-8">
-          <span className="mb-5 grid size-11 place-items-center rounded-xl bg-accent/15 text-accent">
-            <Icon name="graduation" />
-          </span>
-          <h3 className="mb-1 text-xl font-bold text-ink">{education.degree}</h3>
-          <p className="font-semibold text-accent-2">{education.school}</p>
-          <p className="mt-1 text-sm text-ink-2">{education.graduated}</p>
-        </Reveal>
-        <Reveal delay={80} className="card card-hover p-6 sm:p-8">
-          <span className="mb-5 grid size-11 place-items-center rounded-xl bg-accent-2/15 text-accent-2">
-            <Icon name="award" />
-          </span>
-          <h3 className="mb-3 text-xl font-bold text-ink">Certifications</h3>
-          <ul className="flex flex-col gap-3">
-            {certifications.map((certification) => (
-              <li key={certification} className="flex gap-3 leading-relaxed text-ink-2">
-                <Icon name="chevron" width={16} height={16} className="mt-1.5 shrink-0 text-accent" />
-                {certification}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
+    <Section
+      id="blog"
+      number="04"
+      title="Blog & Insights"
+      subtitle="Lessons from shipping AI systems to production"
+    >
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post, i) => (
+          <Reveal key={post.slug} delay={i * 80} className="card card-hover flex flex-col gap-4 p-6">
+            <TagList items={post.tags} />
+            <h3 className="text-xl font-bold text-ink">{post.title}</h3>
+            <p className="grow leading-relaxed text-ink-2">{post.summary}</p>
+            <PostMeta date={post.date} isoDate={post.isoDate} readTime={post.readTime} />
+            <PostDialog post={post} />
+          </Reveal>
+        ))}
       </div>
     </Section>
   );
@@ -187,8 +207,8 @@ export function Contact() {
         <Reveal className="flex flex-col gap-5">
           <h3 className="gradient-text w-fit text-3xl font-bold">Let&apos;s Build Something</h3>
           <p className="text-lg leading-relaxed text-ink-2">
-            Whether you need agents and RAG pipelines in production or a full stack engineer to take a product from
-            idea to launch, send me a note.
+            Whether you need agents and RAG pipelines in production, a full stack engineer to take a product from idea
+            to launch, or just want to talk about LLMs, send me a note. I enjoy a good conversation.
           </p>
           <a href={`mailto:${profile.email}`} className="card card-hover flex items-center gap-4 p-4">
             <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-accent/15 text-accent">

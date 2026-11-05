@@ -48,10 +48,10 @@ export function Hero() {
             Get In Touch
           </a>
           <a
-            href="#work"
+            href="#projects"
             className="rounded-xl border-2 border-accent bg-glass px-7 py-3.5 font-semibold text-ink backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-accent/10"
           >
-            View Work
+            View Projects
           </a>
         </div>
         <a

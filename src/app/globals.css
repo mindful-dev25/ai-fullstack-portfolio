@@ -74,6 +74,11 @@ body::before {
     radial-gradient(36rem 36rem at 8% 40%, color-mix(in srgb, var(--accent-2) 6%, transparent), transparent 70%);
 }
 
+/* Keep the page behind an open dialog from scrolling. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;

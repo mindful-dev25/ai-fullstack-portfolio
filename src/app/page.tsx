@@ -1,7 +1,7 @@
 import { Hero } from "@/components/Hero";
 import { Navbar } from "@/components/Navbar";
 import { ScrollProgress } from "@/components/ScrollProgress";
-import { About, Contact, Education, Experience, FeaturedWork, Footer } from "@/components/sections";
+import { About, Blog, Contact, Experience, FeaturedProjects, Footer } from "@/components/sections";
 
 export default function Home() {
   return (
@@ -18,8 +18,8 @@ export default function Home() {
         <Hero />
         <About />
         <Experience />
-        <FeaturedWork />
-        <Education />
+        <FeaturedProjects />
+        <Blog />
         <Contact />
       </main>
       <Footer />

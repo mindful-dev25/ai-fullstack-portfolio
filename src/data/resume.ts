@@ -189,7 +189,7 @@ export const certifications = [
 export const navLinks = [
   { label: "About", href: "#about" },
   { label: "Experience", href: "#experience" },
-  { label: "Work", href: "#work" },
-  { label: "Education", href: "#education" },
+  { label: "Projects", href: "#projects" },
+  { label: "Blog", href: "#blog" },
   { label: "Contact", href: "#contact" },
 ];
