@@ -1,4 +1,4 @@
-import { featuredWork, profile, skills, socials, stats, type SkillIcon } from "@/data/resume";
+import { featuredProjects, profile, skills, socials, stats, type SkillIcon } from "@/data/resume";
 import { posts } from "@/data/posts";
 import { ContactForm } from "./ContactForm";
 import { ExperienceTabs } from "./ExperienceTabs";
@@ -74,19 +74,16 @@ export function FeaturedProjects() {
       id="projects"
       number="03"
       title="Featured Projects"
-      subtitle="Systems shipped to production, and what they changed"
+      subtitle="A selection of AI-powered applications and developer tools I've built"
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {featuredWork.map((item, i) => (
+        {featuredProjects.map((item, i) => (
           <Reveal key={item.title} delay={(i % 3) * 60} className="card card-hover relative flex flex-col overflow-hidden p-5">
             <div aria-hidden="true" className="accent-gradient absolute inset-x-0 top-0 h-1" />
-            <div className="mb-3 flex flex-wrap items-baseline gap-x-2">
-              <p className="gradient-text w-fit text-2xl font-bold">{item.metric}</p>
-              <p className="text-xs text-ink-2">{item.metricLabel}</p>
-            </div>
-            <h3 className="text-lg leading-snug font-bold text-ink">{item.title}</h3>
-            <p className="mb-2 text-sm font-semibold text-accent-2">{item.company}</p>
-            <p className="mb-4 grow text-sm leading-relaxed text-ink-2">{item.description}</p>
+            <p className="mb-3 w-fit rounded-full bg-accent/15 px-2.5 py-0.5 text-xs font-semibold text-accent">Featured</p>
+            <h3 className="mb-2 text-lg leading-snug font-bold text-ink">{item.title}</h3>
+            <p className="mb-2 text-sm leading-relaxed text-ink-2">{item.description}</p>
+            <p className="mb-4 grow text-sm leading-relaxed text-ink-2">{item.impact}</p>
             <TagList items={item.tags} />
           </Reveal>
         ))}

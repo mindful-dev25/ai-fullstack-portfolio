@@ -134,35 +134,30 @@ export const experience = [
   },
 ];
 
-// The resume lists no side projects, so these are the standout shipped systems
-// from the work history above. Replace or extend with real projects and links.
-export const featuredWork = [
+export const featuredProjects = [
   {
-    metric: "12 hrs/week",
-    metricLabel: "instructor follow-up saved",
-    title: "At-Risk Student Outreach Agents",
-    company: "Blackboard",
+    title: "AI Component Library",
     description:
-      "AI agents that identify at-risk students and automate personalized outreach, backed by secure MCP servers connecting them to internal content and workflow systems.",
-    tags: ["LangGraph", "Claude", "MCP", "Python"],
+      "Production-ready React and TypeScript monorepo offering reusable components for chat interfaces, document summarization, and prompt-driven UI generation.",
+    impact:
+      "Integrated OpenAI and Anthropic APIs with streaming, error handling, accessibility patterns, Storybook, Rollup, and Jest so teams could ship AI features faster without rebuilding common interaction patterns.",
+    tags: ["React", "TypeScript", "OpenAI", "Anthropic", "Storybook", "Rollup", "Jest"],
   },
   {
-    metric: "< 30 sec",
-    metricLabel: "course discovery, down from 2 min",
-    title: "RAG-Powered Course Discovery",
-    company: "Blackboard",
+    title: "Intelligent Healthcare Form Builder",
     description:
-      "RAG pipelines that take course discovery from minutes to seconds, combined with model routing and context optimization that saved $200K a year in LLM spend.",
-    tags: ["LangChain", "OpenAI", "Hugging Face", "Pinecone"],
+      "Drag-and-drop form builder built with React DnD, React Hook Form, and Zod, enhanced with LLM-powered schema suggestions.",
+    impact:
+      "Allowed non-technical healthcare staff to describe intake forms in plain English and generate validated, editable schemas without waiting on engineering support.",
+    tags: ["React", "React DnD", "React Hook Form", "Zod", "LLMs", "TypeScript"],
   },
   {
-    metric: "$2.2B",
-    metricLabel: "annual revenue supported",
-    title: "Personalized Insulin Dosing Platform",
-    company: "Medtronic",
+    title: "Document Intelligence Dashboard",
     description:
-      "A healthcare platform for personalized insulin dosing across diabetes care, with HIPAA-compliant observability and security controls.",
-    tags: ["Java", "Spring Boot", "React", "GraphQL"],
+      "Full-stack document intelligence application combining OCR, OpenCV, Tesseract, LLM summarization, and RAG retrieval.",
+    impact:
+      "Built with FastAPI and React to extract, search, and summarize medical PDFs, helping clinicians surface critical details from unstructured records in seconds.",
+    tags: ["FastAPI", "React", "OpenCV", "Tesseract", "LLMs", "RAG"],
   },
 ];
 
