@@ -98,7 +98,7 @@ export function Blog() {
       id="blog"
       number="04"
       title="Blog & Insights"
-      subtitle="Lessons from shipping AI systems to production"
+      subtitle="Thoughts on AI engineering, web development, and building products that matter"
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post, i) => (

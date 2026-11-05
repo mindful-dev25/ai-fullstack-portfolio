@@ -4,7 +4,7 @@ import { useId, useRef } from "react";
 import type { Post } from "@/data/posts";
 import { Icon } from "./icons";
 import { PostMeta } from "./PostMeta";
-import { TagList } from "./ui";
+import { RichText, TagList } from "./ui";
 
 /** "Read more" button that opens the full post in a modal dialog. */
 export function PostDialog({ post }: { post: Post }) {
@@ -17,10 +17,11 @@ export function PostDialog({ post }: { post: Post }) {
         type="button"
         onClick={() => dialog.current?.showModal()}
         aria-label={`Read more: ${post.title}`}
-        className="flex w-fit cursor-pointer items-center gap-2 font-semibold text-accent transition-[gap] hover:gap-3"
+        className="group flex w-fit cursor-pointer items-center gap-2 font-semibold text-accent"
       >
         Read more
-        <Icon name="arrowRight" width={16} height={16} />
+        {/* Slide with a transform: changing the gap can wrap the row and shift the card. */}
+        <Icon name="arrowRight" width={16} height={16} className="transition-transform group-hover:translate-x-1" />
       </button>
 
       {/* showModal gives us focus trapping, Esc to close, and focus return. */}
@@ -60,16 +61,37 @@ export function PostDialog({ post }: { post: Post }) {
           <PostMeta date={post.date} isoDate={post.isoDate} readTime={post.readTime} />
           <div className="accent-gradient mt-5 mb-7 h-1 w-20 rounded-full" />
 
-          {post.sections.map(({ heading, paragraphs }) => (
-            <section key={heading} className="mb-7 last:mb-0">
-              <h4 className="mb-3 text-xl font-bold">{heading}</h4>
-              {paragraphs.map((paragraph) => (
-                <p key={paragraph} className="mb-3 leading-relaxed text-ink-2 last:mb-0">
-                  {paragraph}
-                </p>
-              ))}
-            </section>
-          ))}
+          <div className="space-y-4 leading-relaxed text-ink-2">
+            {post.body.map((block, i) => {
+              switch (block.type) {
+                case "heading":
+                  return (
+                    <h4 key={i} className="pt-2 text-xl font-bold text-ink">
+                      {block.text}
+                    </h4>
+                  );
+                case "paragraph":
+                  return (
+                    <p key={i}>
+                      <RichText text={block.text} />
+                    </p>
+                  );
+                case "numbered":
+                case "bullets": {
+                  const List = block.type === "numbered" ? "ol" : "ul";
+                  return (
+                    <List key={i} className={`space-y-3 pl-5 ${block.type === "numbered" ? "list-decimal" : "list-disc"}`}>
+                      {block.items.map((item) => (
+                        <li key={item}>
+                          <RichText text={item} />
+                        </li>
+                      ))}
+                    </List>
+                  );
+                }
+              }
+            })}
+          </div>
         </article>
         </div>
       </dialog>

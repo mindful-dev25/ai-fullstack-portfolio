@@ -1,123 +1,112 @@
-// Blog posts. Results quoted here come from the resume; the surrounding advice
-// is general engineering opinion, so edit it to match your own experience.
+// Blog posts. Text in paragraphs and list items may use **bold** markers.
 
-type PostSource = {
+type PostBlock =
+  | { type: "paragraph" | "heading"; text: string }
+  | { type: "numbered" | "bullets"; items: string[] };
+
+export type Post = {
   slug: string;
   tags: string[];
   title: string;
   summary: string;
   date: string; // Shown on the page
   isoDate: string; // Machine-readable publish date
-  sections: { heading: string; paragraphs: string[] }[];
+  readTime: string;
+  body: PostBlock[];
 };
 
-const WORDS_PER_MINUTE = 200;
-
-const sources: PostSource[] = [
+export const posts: Post[] = [
   {
-    slug: "from-2-minutes-to-30-seconds-with-rag",
-    tags: ["RAG", "LangChain", "Pinecone"],
-    title: "From 2 Minutes to 30 Seconds with RAG",
+    slug: "building-production-ready-rag-systems",
+    tags: ["RAG", "LLMs", "Python"],
+    title: "Building Production-Ready RAG Systems",
     summary:
-      "Notes on cutting course discovery time at Blackboard using LangChain, OpenAI embeddings, Hugging Face Transformers, and Pinecone.",
-    date: "Nov 5, 2026",
-    isoDate: "2026-11-05",
-    sections: [
+      "A deep dive into designing retrieval-augmented generation pipelines that actually work at scale. Covering vector databases, embedding strategies, and evaluation metrics.",
+    date: "Jan 15, 2026",
+    isoDate: "2026-01-15",
+    readTime: "8 min read",
+    body: [
       {
-        heading: "Start with the number that matters",
-        paragraphs: [
-          "At Blackboard, I worked on bringing course discovery time down from 2 minutes to under 30 seconds. Having one concrete target made every design decision easier, because each change could be judged by whether it helped someone find the right course faster.",
-          "A demo that answers a few questions well can look finished long before it is. A clear metric keeps a RAG project honest once it meets real queries.",
+        type: "paragraph",
+        text: "Retrieval-Augmented Generation (RAG) has become the go-to architecture for building AI applications that need access to custom knowledge bases. But there's a significant gap between a quick prototype and a production-ready system.",
+      },
+      { type: "heading", text: "Key Lessons Learned" },
+      {
+        type: "numbered",
+        items: [
+          "**Chunking Strategy Matters** - Don't just split on character count. Consider semantic boundaries, overlapping chunks, and metadata preservation.",
+          "**Hybrid Search is King** - Pure vector search has limitations. Combine with BM25 for keyword matching, metadata filters, and re-ranking.",
+          "**Evaluation is Non-Negotiable** - Build evaluation pipelines early with retrieval metrics (recall@k, MRR) and generation quality measures.",
         ],
       },
       {
-        heading: "The stack is the easy part",
-        paragraphs: [
-          "The pipelines used LangChain, OpenAI embeddings, Hugging Face Transformers, and Pinecone. These are well-understood tools, and getting a first version running with them is quick.",
-          "The harder work comes afterward. In my view, most RAG quality problems are retrieval problems, so I look there first: how content is split, what gets embedded, and whether the right passage reaches the model at all. If the context is wrong, a better prompt will not save the answer.",
+        type: "paragraph",
+        text: "Building production RAG systems requires thinking beyond the happy path. Invest in evaluation, monitoring, and iteration.",
+      },
+    ],
+  },
+  {
+    slug: "agentic-ai-patterns-for-real-applications",
+    tags: ["Agents", "LangChain", "AI"],
+    title: "Agentic AI Patterns for Real Applications",
+    summary:
+      "Exploring practical patterns for building AI agents that can reason, plan, and execute multi-step tasks. From simple chains to complex autonomous workflows.",
+    date: "Dec 28, 2025",
+    isoDate: "2025-12-28",
+    readTime: "12 min read",
+    body: [
+      {
+        type: "paragraph",
+        text: 'AI agents are having their moment. But between the hype of "autonomous AI" and the reality of production systems, there\'s a lot of practical wisdom to share.',
+      },
+      { type: "heading", text: "Patterns That Actually Work" },
+      {
+        type: "numbered",
+        items: [
+          "**ReAct (Reasoning + Acting)** - The foundation of most agent architectures. Interleave thinking and action for better results.",
+          "**Plan-and-Execute** - For complex tasks, separate planning from execution. Generate a high-level plan first, then execute with ability to re-plan.",
+          "**Multi-Agent Collaboration** - Sometimes one agent isn't enough. Use specialized agents for research, analysis, and writing.",
         ],
       },
+      { type: "heading", text: "Common Pitfalls" },
       {
-        heading: "What I would tell another team",
-        paragraphs: [
-          "Measure the user's task, not the model's output. Inspect retrieval on its own before judging generation. And treat the pipeline as a product feature that needs ongoing tuning, not a component you ship once and forget.",
+        type: "bullets",
+        items: [
+          "Over-autonomy: Don't let agents run forever",
+          "Poor error handling: Agents will fail, plan for it",
+          "Missing guardrails: Always validate outputs",
         ],
       },
     ],
   },
   {
-    slug: "saving-200k-a-year-on-llm-spend",
-    tags: ["LLMs", "Cost", "Model Routing"],
-    title: "Saving $200K a Year on LLM Spend",
+    slug: "react-performance-in-ai-heavy-applications",
+    tags: ["React", "Performance", "Frontend"],
+    title: "React Performance in AI-Heavy Applications",
     summary:
-      "How prompt engineering, retrieval tuning, and context optimization keep premium models reserved for high-complexity tasks.",
-    date: "Nov 5, 2026",
-    isoDate: "2026-11-05",
-    sections: [
+      "Strategies for keeping your React UI responsive when dealing with streaming LLM responses, large datasets, and complex visualizations.",
+    date: "Nov 10, 2025",
+    isoDate: "2025-11-10",
+    readTime: "6 min read",
+    body: [
       {
-        heading: "Not every request needs your best model",
-        paragraphs: [
-          "At Blackboard, a combination of prompt engineering, model routing, retrieval tuning, and context optimization saved $200K a year in LLM spend. The principle behind it is simple: reserve premium models for high-complexity tasks.",
-          "It is tempting to send everything to the most capable model because it is the safest default while building. That default gets expensive at production volume, and many requests never needed that capability.",
+        type: "paragraph",
+        text: "When building AI-powered React applications, performance challenges multiply. Streaming responses, real-time updates, and complex visualizations can quickly overwhelm your UI.",
+      },
+      { type: "heading", text: "Key Strategies" },
+      {
+        type: "numbered",
+        items: [
+          "**Virtualization** - For long chat histories or document lists, use react-window or react-virtualized.",
+          "**Streaming Optimization** - Batch DOM updates during LLM streaming. Don't re-render on every token.",
+          "**Web Workers** - Offload heavy computations like embedding similarity calculations to background threads.",
+          "**Memoization** - Use React.memo, useMemo, and useCallback strategically, especially for components receiving streaming data.",
         ],
       },
       {
-        heading: "Four levers that work together",
-        paragraphs: [
-          "Model routing decides which model handles a request. Prompt engineering makes each instruction shorter and clearer. Context optimization limits what gets sent along with the prompt. Retrieval tuning supports that, because more relevant passages mean less filler in every call.",
-          "These compound. A tighter prompt with better context costs less on any model, and it also makes a smaller model more likely to give a good answer, which lets you route more traffic to it.",
-        ],
-      },
-      {
-        heading: "Protect quality while you cut",
-        paragraphs: [
-          "Cost work only counts if the product stays just as good. I would compare answers before and after each change, and roll out routing rules gradually. Savings that quietly make the product worse are not savings.",
-        ],
-      },
-    ],
-  },
-  {
-    slug: "guardrails-for-low-confidence-ai",
-    tags: ["Guardrails", "Safety", "Agents"],
-    title: "Guardrails for Low-Confidence AI",
-    summary:
-      "Using hallucination detection, PII filtering, and policy enforcement to reduce low-confidence responses by 30%.",
-    date: "Nov 5, 2026",
-    isoDate: "2026-11-05",
-    sections: [
-      {
-        heading: "Guardrails are a pipeline, not a filter",
-        paragraphs: [
-          "At Blackboard, I built guardrails pipelines covering hallucination detection, PII filtering, and policy enforcement, which reduced low-confidence AI responses by 30%.",
-          "I think of these as separate stages because each one answers a different question. Is this answer supported? Does it expose personal data? Is it something the product should say at all? A single catch-all check tends to answer all three poorly.",
-        ],
-      },
-      {
-        heading: "Why this matters more with agents",
-        paragraphs: [
-          "When an AI system only suggests text, a person can catch a bad answer. Agents act on what they conclude, so an unsupported claim can turn into a real action. That is why I treat guardrails as core infrastructure once agents are calling tools and reaching into internal systems.",
-        ],
-      },
-      {
-        heading: "Decide what happens on failure",
-        paragraphs: [
-          "Detecting a problem is only half of the job. Every check needs a defined outcome, such as retrying with more context, declining to answer, or handing off to a person. Without that, a guardrail just produces a log entry that nobody reads.",
-          "Track how often each check fires, too. Those numbers show where the system is weak and tell you what to improve next.",
-        ],
+        type: "paragraph",
+        text: "The goal is maintaining 60fps while processing complex AI responses. It's achievable with the right architecture.",
       },
     ],
   },
 ];
-
-function minutesToRead(post: PostSource) {
-  const text = post.sections.flatMap(({ heading, paragraphs }) => [heading, ...paragraphs]).join(" ");
-  const words = text.trim().split(/\s+/).length;
-  return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
-}
-
-export const posts = sources.map((post) => ({
-  ...post,
-  readTime: `${minutesToRead(post)} min read`,
-}));
-
-export type Post = (typeof posts)[number];
