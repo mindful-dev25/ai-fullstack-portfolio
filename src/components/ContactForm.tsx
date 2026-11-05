@@ -1,51 +1,58 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { profile } from "@/data/resume";
+import { useActionState } from "react";
+import { submitContactForm, type ContactState } from "@/app/actions";
+import { LIMITS, type ContactField } from "@/lib/contact-email";
 import { Icon } from "./icons";
 
 const fieldClass =
-  "w-full rounded-xl border border-line bg-page px-3.5 py-2.5 text-ink transition-colors placeholder:text-ink-3 focus:border-accent focus:outline-none";
+  "w-full rounded-xl border border-line bg-page px-3.5 py-2.5 text-ink transition-colors placeholder:text-ink-3 focus:border-accent focus:outline-none aria-invalid:border-red-500";
 
-/**
- * There is no mail backend, so sending opens the visitor's email app with the
- * message filled in. Swap handleSubmit for an API call to send from the page.
- */
+const initialState: ContactState = { status: "idle" };
+
+/** Sends the message from the server, so the visitor stays on the page. */
 export function ContactForm() {
-  const [opened, setOpened] = useState(false);
+  const [state, formAction, pending] = useActionState(submitContactForm, initialState);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const name = String(data.get("name"));
-    const subject = encodeURIComponent(`Portfolio inquiry from ${name}`);
-    const body = encodeURIComponent(`${data.get("message")}\n\n${name}\n${data.get("email")}`);
-    window.location.href = `mailto:${profile.email}?subject=${subject}&body=${body}`;
-    setOpened(true);
-  };
+  const fieldProps = (name: ContactField) => ({
+    id: name,
+    name,
+    required: true,
+    maxLength: LIMITS[name],
+    defaultValue: state.values?.[name],
+    "aria-invalid": state.errors?.[name] ? true : undefined,
+    "aria-describedby": state.errors?.[name] ? `${name}-error` : undefined,
+  });
+
+  const fieldError = (name: ContactField) =>
+    state.errors?.[name] && (
+      <p id={`${name}-error`} className="mt-1.5 text-xs text-red-500">
+        {state.errors[name]}
+      </p>
+    );
 
   return (
-    <form onSubmit={handleSubmit} className="card flex flex-col gap-3.5 p-5">
+    <form action={formAction} className="card flex flex-col gap-3.5 p-5">
       <div className="grid gap-3.5 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-ink">
             Name
           </label>
-          <input id="name" name="name" required autoComplete="name" placeholder="Your name" className={fieldClass} />
+          <input {...fieldProps("name")} autoComplete="name" placeholder="Your name" className={fieldClass} />
+          {fieldError("name")}
         </div>
         <div>
           <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-ink">
             Email
           </label>
           <input
-            id="email"
-            name="email"
+            {...fieldProps("email")}
             type="email"
-            required
             autoComplete="email"
             placeholder="you@example.com"
             className={fieldClass}
           />
+          {fieldError("email")}
         </div>
       </div>
       <div>
@@ -53,25 +60,31 @@ export function ContactForm() {
           Message
         </label>
         <textarea
-          id="message"
-          name="message"
-          required
+          {...fieldProps("message")}
           rows={3}
           placeholder="Tell me about your project or role"
           className={`${fieldClass} resize-y`}
         />
+        {fieldError("message")}
+      </div>
+      {/* Spam trap: hidden from people, but simple bots fill it in. */}
+      <div aria-hidden="true" className="hidden">
+        <label htmlFor="website">Website</label>
+        <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
       <button
         type="submit"
-        className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 font-semibold text-on-accent transition hover:-translate-y-0.5 hover:shadow-glow"
+        disabled={pending}
+        className="flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-accent px-6 py-3 font-semibold text-on-accent transition enabled:hover:-translate-y-0.5 enabled:hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-70"
       >
         <Icon name="send" width={18} height={18} />
-        Send Message
+        {pending ? "Sending..." : "Send Message"}
       </button>
-      <p aria-live="polite" className="text-center text-xs text-ink-3">
-        {opened
-          ? `Your email app should have opened. If not, write to ${profile.email}.`
-          : "Sending opens your email app with this message filled in."}
+      <p
+        aria-live="polite"
+        className={`text-center text-sm empty:hidden ${state.status === "error" ? "text-red-500" : "text-accent"}`}
+      >
+        {pending ? "" : state.notice}
       </p>
     </form>
   );
